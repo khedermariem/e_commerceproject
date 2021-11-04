@@ -5,7 +5,6 @@ const verifyToken = require("../middleware/verifyToken");
 
 
 router.get("/", orderControllers.getOrders);
-//router.get("/me", verifyToken, isSeller, productControllers.getOwnedProducts);
 router.get("/:orderId", orderControllers.getOrder);
 router.post(
 	"/",

@@ -55,7 +55,6 @@ const getProductBySlug = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  // TODO fix in prod
   const newProduct = new Product({
     name: req.body.name,
     image: req.protocol + "://" + req.hostname + ":8000" + "/" + req.file.path,

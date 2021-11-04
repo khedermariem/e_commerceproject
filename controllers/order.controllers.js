@@ -1,7 +1,6 @@
 const Order = require("../models/order.models");
 
 const createOrder = async (req, res) => {
-  // TODO fix in prod
   const newOrder = new Order({
     name: req.body.name,
     address: req.body.address,

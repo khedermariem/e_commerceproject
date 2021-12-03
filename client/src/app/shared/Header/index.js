@@ -1,11 +1,25 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 import { Link } from "react-router-dom";
 import SignIn from "../../auth/SignIn";
-const Header = () => {
-  const [IsSignINOpen, setIsSignInOpen] = useState(false);
+import Register from './../../auth/Register/index';
+import {useClickAway} from "react-use";
+
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { logout } from "../../actions/auth.actions";
+const Header = ({authState,logout}) => {
+  const [IsSignInOpen, setIsSignInOpen] = useState(false);
+  const [IsRegisterOpen, setIsRegisterOpen]= useState(false);
+  const [isDropOpen, setIsDropOpen] = useState(false)
   const handleSignInClose = (e) =>{
-	setIsSignInOpen (e);  
+	setIsSignInOpen (e);
+  setIsRegisterOpen(e)  
   }
+  const dropRef = useRef(null);
+  useClickAway(dropRef, () => {
+		setIsDropOpen(false);
+	});
+ 
   return (
     <div>
       <header className="box-border pt-4 border-b-2 border-solid border-minor">
@@ -25,33 +39,65 @@ const Header = () => {
               </button>
             </div>
 
-            <div className="flex items-center justify-between w-4/12">
+            <div className="flex items-center justify-center w-12 h-12">
               <Link
                 to="/FavoriteProduct"
                 className="w-1/12 px-6 py-2 transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap "
               >
                 <i className="fas fa-heart"></i>
               </Link>
-
-              <button
-                onClick={(e) => setIsSignInOpen(true)}
-                className="w-1/2 px-6 py-2 text-sm font-semibold text-center transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap"
-              >
-                Sign in
-              </button >
-              {IsSignINOpen && 
-			  
-			  <SignIn
-			  text="login"
-			  CloseModel = {(e) => handleSignInClose (e)} />}
-              <button className="w-1/2 px-6 py-2 text-sm font-semibold text-center transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap">
-                Register
-              </button>
+              </div>
+              
+					
+					{!authState.isAuthenticated ? (
+						<div className="flex items-center justify-between w-4/12">
+							<button
+								onClick={(e) => setIsSignInOpen(true)}
+								className="w-1/2 px-6 py-2 text-sm font-semibold text-center transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap">
+								Sign in
+							</button>
+							<button
+								onClick={(e) => setIsRegisterOpen(true)}
+								className="w-1/2 px-6 py-2 text-sm font-semibold text-center transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap">
+								Register
+							</button>
+						</div>
+					) : (
+						<div ref={dropRef} className="relative cursor-pointer">
+							<div
+								onClick={(e) => setIsDropOpen(!isDropOpen)}
+						
+								 className="flex items-center justify-start gap-4">
+								<div className="flex items-center justify-center w-10 h-10 text-sm font-bold uppercase rounded-full bg-primary text-main">
+									<span>{authState.user.firstName[0]}</span>
+									<span>{authState.user.lastName[0]}</span>
+								</div>
+								<div className="font-semibold capitalize whitespace-nowrap">
+									{authState.user.firstName} {authState.user.lastName}
+								</div>
+                
+					
+        </div>
+        {isDropOpen && (
+							
+									<div
+										className="px-4 py-2 font-bold text-center cursor-pointer rounded-xl"
+										onClick={(e) => logout()}>
+										Logout
+									</div>
+							
+							)}
+          </div>	)}
+          {IsSignInOpen && <SignIn closeModal={(e) => handleSignInClose(e)} />}
+					{IsRegisterOpen && 
+						<Register closeModal={(e) => handleSignInClose(e)} />
+					}
+          
               <Link to="/Cart"className="w-1/12 px-6 py-2 transition-all duration-200 ease-in-out rounded-full hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap ">
                 <i className="fas fa-shopping-bag"></i>
               </Link>
             </div>
-          </div>
+          
         </div>
         <div className="flex items-center justify-between gap-4 ">
           <div> Gaming </div>
@@ -67,6 +113,22 @@ const Header = () => {
         </div>
       </header>
     </div>
-  );
+   );
 };
-export default Header;
+Header.propTypes = {
+	authState: PropTypes.object.isRequired,
+  logout: PropTypes.func.isRequired,
+  
+};
+const mapStateToProps = (state) => ({
+  authState: state.authState,
+  
+
+
+})
+
+const mapDispatchToProps = {
+  logout
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Header);

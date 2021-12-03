@@ -4,9 +4,12 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Header from "./app/shared/Header";
 import FavoriteProduct from "./app/pages/FavoriteProduct";
 import Cart from "./app/pages/Cart";
+import { store } from './store';
+import { Provider } from "react-redux";
 
 function App() {
   return (
+    <Provider store={store}>
     <Router>
       <Header />
       <Switch>
@@ -16,6 +19,7 @@ function App() {
         <Route exact path="/Cart" component={Cart} />
       </Switch>
     </Router>
+    </Provider>
   );
 }
 export default App;

@@ -7,6 +7,17 @@ export const USER_LOADED = "USER_LOADED";
 export const AUTH_LOADING = "AUTH_LOADING";
 export const LOGOUT = "lOGOUT";
 
+
+export const GET_PRODUCTS = "GET_PRODUCTS";
+export const GET_PRODUCT = "GET_PRODUCT";
+export const GET_PRODUCTS_CATEGORY = "GET_PRODUCTS_CATEGORY";
+export const CREATE_PRODUCT = "CREATE_PRODUCT";
+export const PRODUCT_LOADING ="PRODUCT_LOADING"
+export const PRODUCT_ERROR ="PRODUCT_ERROR";
+
+
+export const GET_CATEGORIES = "GET_CATEGORIES";
+export const CATEGORY_ERROR = "CATEGORY_ERROR";
  
  
  

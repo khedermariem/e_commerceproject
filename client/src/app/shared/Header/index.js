@@ -7,14 +7,21 @@ import {useClickAway} from "react-use";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { logout } from "../../actions/auth.actions";
+import ProductForm from "../../pages/productForm";
 const Header = ({authState,logout}) => {
   const [IsSignInOpen, setIsSignInOpen] = useState(false);
   const [IsRegisterOpen, setIsRegisterOpen]= useState(false);
-  const [isDropOpen, setIsDropOpen] = useState(false)
+  const [isDropOpen, setIsDropOpen] = useState(false);
+  const [isProductFormOpen, setIsProductFormOpen] = useState(false);
+
+  
   const handleSignInClose = (e) =>{
 	setIsSignInOpen (e);
   setIsRegisterOpen(e)  
-  }
+  };
+  const handleProductFormClose = (e) => {
+		setIsProductFormOpen(e);
+	};
   const dropRef = useRef(null);
   useClickAway(dropRef, () => {
 		setIsDropOpen(false);
@@ -97,8 +104,23 @@ const Header = ({authState,logout}) => {
                 <i className="fas fa-shopping-bag"></i>
               </Link>
             </div>
+            {authState.isAuthenticated && 
+              authState.user.isAdmin && (
+						<div
+							onClick={(e) => setIsProductFormOpen(true)}
+							className="flex items-center justify-center w-12 h-12 p-3 text-lg font-semibold text-center text-gray-800 transition-all duration-200 ease-in-out rounded-full cursor-pointer hover:bg-gray-100 focus:bg-gray-200 whitespace-nowrap">
+							<i class="fas fa-plus"></i>
+						</div>
+					)}
+              
+          	{isProductFormOpen && (
+						<ProductForm
+							method="post"
+							closeModal={(e) => handleProductFormClose(e)}
+						/>
+					)}
+				</div>
           
-        </div>
         <div className="flex items-center justify-between gap-4 ">
           <div> Gaming </div>
           <div>Informatique</div>

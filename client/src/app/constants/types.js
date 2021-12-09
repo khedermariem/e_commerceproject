@@ -18,7 +18,7 @@ export const PRODUCT_ERROR ="PRODUCT_ERROR";
 
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const CATEGORY_ERROR = "CATEGORY_ERROR";
- 
+export const CATEGORY_LOADING = "CATEGORY_LOADING";
  
  
 
